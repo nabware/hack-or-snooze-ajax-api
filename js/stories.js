@@ -50,3 +50,8 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** Retrieves data from '#story-submit-form and displays new story on page*/
+function displayNewStory() {
+
+}
