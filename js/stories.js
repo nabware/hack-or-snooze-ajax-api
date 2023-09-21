@@ -71,3 +71,5 @@ async function handleSubmitStory(evt) {
 }
 
 $storySubmitForm.on("submit", handleSubmitStory);
+
+$allStoriesList.on("click", "", () =>{});

@@ -213,15 +213,26 @@ class User {
   }
 
   /** takes a Story Instance and adds to users favorite */
-  async addFavoriteStory(story) {
-    const params = URLSearchParams({ username: currentUser.username, storyId: story.storyId });
-    await fetch(`${BASE_URL}/users/${params.username}/favorites/${params.storyId}`,
+  async addFavorite({ storyId }) {
+    await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
       {
         method: "POST",
-        body: JSON.stringify({ token: currentUser.token }),
+        body: JSON.stringify({ token: currentUser.loginToken }),
         headers: {
           "content-type": "application/json",
         }
       });
   }
+
+    /** takes a Story Instance and removes it from users favorites */
+    async unFavorite({ storyId }) {
+      await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
+        {
+          method: "DELETE",
+          body: JSON.stringify({ token: currentUser.loginToken }),
+          headers: {
+            "content-type": "application/json",
+          }
+        });
+    }
 }
