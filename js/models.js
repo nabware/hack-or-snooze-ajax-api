@@ -80,7 +80,7 @@ class StoryList {
         token: user.loginToken,
         story: newStory
       }),
-      headers: {"Content-Type": "application/json"},
+      headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
     const story = new Story(data.story);
@@ -210,5 +210,18 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+
+  /** takes a Story Instance and adds to users favorite */
+  async addFavoriteStory(story) {
+    const params = URLSearchParams({ username: currentUser.username, storyId: story.storyId });
+    await fetch(`${BASE_URL}/users/${params.username}/favorites/${params.storyId}`,
+      {
+        method: "POST",
+        body: JSON.stringify({ token: currentUser.token }),
+        headers: {
+          "content-type": "application/json",
+        }
+      });
   }
 }
