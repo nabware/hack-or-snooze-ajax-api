@@ -66,6 +66,15 @@ class StoryList {
     return new StoryList(stories);
   }
 
+  /** takes a story Id and Calls the API returns story Instance */
+  static async getStoryFromId(storyId) {
+    const response = await fetch(`${BASE_URL}/stories/${storyId}`);
+    //const { title, author, url, username, createdAt } = await response.json();
+    //return new Story({ storyId, title, author, url, username, createdAt });
+    return await response.json();
+
+  }
+
   /** Adds story data to API, makes a Story instance, adds it to story list.
    * - user - the current instance of User who will post the story
    * - obj of {title, author, url}
@@ -214,7 +223,7 @@ class User {
 
   /** takes a Story Instance and adds to users favorite */
   async addFavorite({ storyId }) {
-    await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
+    return await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
       {
         method: "POST",
         body: JSON.stringify({ token: currentUser.loginToken }),
@@ -224,15 +233,15 @@ class User {
       });
   }
 
-    /** takes a Story Instance and removes it from users favorites */
-    async unFavorite({ storyId }) {
-      await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
-        {
-          method: "DELETE",
-          body: JSON.stringify({ token: currentUser.loginToken }),
-          headers: {
-            "content-type": "application/json",
-          }
-        });
-    }
+  /** takes a Story Instance and removes it from users favorites */
+  async unFavorite({ storyId }) {
+    return await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
+      {
+        method: "DELETE",
+        body: JSON.stringify({ token: currentUser.loginToken }),
+        headers: {
+          "content-type": "application/json",
+        }
+      });
+  }
 }

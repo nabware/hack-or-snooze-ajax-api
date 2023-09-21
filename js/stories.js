@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
   return $(`
       <li id="${story.storyId}">
+        <i class="star bi bi-star"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -62,7 +63,7 @@ async function handleSubmitStory(evt) {
 
   if (!$storySubmitForm.get(0).reportValidity()) return;
 
-  const story = await storyList.addStory(currentUser, {title, author, url});
+  const story = await storyList.addStory(currentUser, { title, author, url });
   const $story = generateStoryMarkup(story);
   $allStoriesList.prepend($story);
 
@@ -72,4 +73,16 @@ async function handleSubmitStory(evt) {
 
 $storySubmitForm.on("submit", handleSubmitStory);
 
-$allStoriesList.on("click", "", () =>{});
+async function addOrRemoveFavorite(evt) {
+  const $clickTarget = $(evt.target);
+  const storyId = $clickTarget.closest('li').attr('id');
+  const story = await StoryList.getStoryFromId(storyId);
+  console.log(await (await currentUser.addFavorite({ storyId })).json());
+  if ($clickTarget.hasClass('bi-star')) {
+    return;
+  }
+}
+
+
+
+$allStoriesList.on("click", ".star", addOrRemoveFavorite);
