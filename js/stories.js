@@ -52,6 +52,22 @@ function putStoriesOnPage() {
 }
 
 /** Retrieves data from '#story-submit-form and displays new story on page*/
-function displayNewStory() {
 
+async function handleSubmitStory(evt) {
+  evt.preventDefault(); // prevent page refresh
+
+  const author = $("#author-name").val();
+  const title = $("#story-title").val();
+  const url = $("#story-url").val();
+
+  if (!$storySubmitForm.get(0).reportValidity()) return;
+
+  const story = await storyList.addStory(currentUser, {title, author, url});
+  const $story = generateStoryMarkup(story);
+  $allStoriesList.prepend($story);
+
+  $storySubmitForm[0].reset();
+  $storySubmitForm.hide();
 }
+
+$storySubmitForm.on("submit", handleSubmitStory);

@@ -24,8 +24,8 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // FIXME: complete this function!
-    return "hostname.com";
+    // const url = new URL(this.url);
+    return new URL(this.url).hostname;
   }
 }
 
@@ -83,8 +83,9 @@ class StoryList {
       headers: {"Content-Type": "application/json"},
     });
     const data = await response.json();
-
-    return new Story(data.story);
+    const story = new Story(data.story);
+    this.stories.unshift(story);
+    return story;
   }
 }
 

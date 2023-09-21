@@ -19,8 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Hack or Snooze</title>
-  <link rel="stylesheet"
-        href="https://www.unpkg.com/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="https://www.unpkg.com/bootstrap-icons/font/bootstrap-icons.css">
   <link rel="stylesheet" href="css/site.css">
   <link rel="stylesheet" href="css/user.css">
   <link rel="stylesheet" href="css/stories.css">
@@ -35,7 +34,7 @@
       <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
     </div>
     <div class="main-nav-links">
-      <a class="nav-link" href="#" id="nav-submit">submit</a>
+      <a class="nav-link" href="#" id="nav-submit-story">submit</a>
     </div>
     <div class="nav-right">
       <a class="nav-link" href="#" id="nav-login">login/signup</a>
@@ -50,23 +49,22 @@
     <!-- loading message (removed by JS after stories loaded) -->
     <div id="stories-loading-msg">Loading&hellip;</div>
 
-    <div class="hidden" id="submit-section">
-      <form action="#">
-        <div id="story-submit-form">
-          <label>author</label>
-          <input id="author-name" type="text" placeholder="author name">
-        </div>
-        <div>
-          <label>title</label>
-          <input id="story-title" type="text" placeholder="story title">
-        </div>
-        <div>
-          <label>url</label>
-          <input id="story-url" type="text" placeholder="story url">
-        </div>
-        <button>Submit</button>
-      </form>
-    </div>
+    <!-- area for submitting a new story -->
+    <form id="story-submit-form" action="#" class="hidden">
+      <div>
+        <label>author</label>
+        <input id="author-name" required type="text" placeholder="author name">
+      </div>
+      <div>
+        <label>title</label>
+        <input id="story-title" required type="text" placeholder="story title">
+      </div>
+      <div>
+        <label>url</label>
+        <input id="story-url" required type="url" placeholder="story url">
+      </div>
+      <button id="story-submit-button" type="submit">Submit</button>
+    </form>
 
     <!-- List of all stories -->
     <ol id="all-stories-list" class="stories-list"></ol>

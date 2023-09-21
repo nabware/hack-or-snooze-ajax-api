@@ -37,11 +37,12 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
-/** Show sumit story on click on 'submit' */
-function navStorySubmit(evt) {
+/** Show submit story form on click on 'submit' */
+function navStorySubmitDisplay(evt) {
   console.debug("navSubmitClick", evt);
   evt.preventDefault();
-  $navSubmitSection.toggle();
+
+  $storySubmitForm.toggle();
 }
 
-$navSubmit.on("click", navStorySubmit);
+$navSubmit.on("click", navStorySubmitDisplay);
