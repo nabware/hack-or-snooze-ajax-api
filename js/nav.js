@@ -46,3 +46,13 @@ function navStorySubmitDisplay(evt) {
 }
 
 $navSubmit.on("click", navStorySubmitDisplay);
+
+/** Show list of favorite stories when click 'favorites' */
+function navFavoriteStories(evt) {
+  console.debug("navFavoriteStories", evt);
+  evt.preventDefault();
+  hidePageComponents();
+  putFavoriteStoriesOnPage();
+}
+
+$body.on("click", "#nav-favorites", navFavoriteStories);

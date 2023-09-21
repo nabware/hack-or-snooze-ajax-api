@@ -23,9 +23,10 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  const isFavorite = currentUser.favorites.find(s => s.storyId === story.storyId);
   return $(`
       <li id="${story.storyId}">
-        <i class="star bi bi-star"></i>
+        <i class="star bi ${isFavorite ? "bi-star-fill" : "bi-star"}"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -45,6 +46,22 @@ function putStoriesOnPage() {
 
   // loop through all of our stories and generate HTML for them
   for (let story of storyList.stories) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+
+  $allStoriesList.show();
+}
+
+/** Get favorite stories from current user, generates their HTML, and puts on page. */
+
+function putFavoriteStoriesOnPage() {
+  console.debug("putFavoriteStoriesOnPage");
+
+  $allStoriesList.empty();
+
+  // loop through all of our favorite stories and generate HTML for them
+  for (let story of currentUser.favorites) {
     const $story = generateStoryMarkup(story);
     $allStoriesList.append($story);
   }
@@ -76,13 +93,14 @@ $storySubmitForm.on("submit", handleSubmitStory);
 async function addOrRemoveFavorite(evt) {
   const $clickTarget = $(evt.target);
   const storyId = $clickTarget.closest('li').attr('id');
-  const story = await StoryList.getStoryFromId(storyId);
-  console.log(await (await currentUser.addFavorite({ storyId })).json());
+  // const story = await StoryList.getStoryFromId(storyId);
+
   if ($clickTarget.hasClass('bi-star')) {
-    return;
+    currentUser.addFavorite({ storyId });
+  } else {
+    currentUser.unFavorite({ storyId });
   }
+  $clickTarget.toggleClass('bi-star bi-star-fill');
 }
-
-
 
 $allStoriesList.on("click", ".star", addOrRemoveFavorite);
