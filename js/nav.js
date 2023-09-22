@@ -37,7 +37,7 @@ function updateNavOnLogin() {
   $navUserProfile.text(`${currentUser.username}`).show();
 }
 
-/** Show submit story form on click on 'submit' */
+/** Show submit story form on click on 'submit' in nav*/
 function navStorySubmitDisplay(evt) {
   console.debug("navSubmitClick", evt);
   evt.preventDefault();
@@ -47,7 +47,7 @@ function navStorySubmitDisplay(evt) {
 
 $navSubmit.on("click", navStorySubmitDisplay);
 
-/** Show list of favorite stories when click 'favorites' */
+/** Show list of favorite stories on click 'favorites' in nav */
 function navFavoriteStories(evt) {
   console.debug("navFavoriteStories", evt);
   evt.preventDefault();

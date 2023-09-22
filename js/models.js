@@ -28,7 +28,7 @@ class Story {
     return new URL(this.url).hostname;
   }
 
-  /** takes a story Id and Calls the API returns story Instance */
+  /** takes a story Id and calls the API returns story instance */
   static async getStoryFromId(storyId) {
     const response = await fetch(`${BASE_URL}/stories/${storyId}`);
     const data = await response.json();
@@ -220,7 +220,7 @@ class User {
     }
   }
 
-  /** takes a Story Instance and adds to users favorite */
+  /** takes a Story Instance and adds to users favorites in API and local array */
   async addFavorite(story) {
 
     await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
@@ -235,7 +235,8 @@ class User {
     currentUser.favorites.unshift(story);
   }
 
-  /** takes a Story Instance and removes it from users favorites */
+  /** takes a Story Instance and removes it from users favorites in API and local array */
+  //TODO: create internal utility function that recieves story, method
   async unFavorite(story) {
 
     await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
@@ -246,11 +247,12 @@ class User {
           "content-type": "application/json",
         }
       });
-
+    //TODO: update to use filter and add this
     const storyIdx = currentUser.favorites.findIndex(x => x.storyId === story.storyId);
     currentUser.favorites.splice(storyIdx, 1);
   }
 
+  /** Takes story instance and returns true or false if in users favorite list */
   isFavorite(story) {
     return this.favorites.find(s => s.storyId === story.storyId);
   }

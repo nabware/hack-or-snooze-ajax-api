@@ -21,13 +21,16 @@ async function getAndShowStoriesOnStart() {
 
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
-
   const hostName = story.getHostName();
-  const isFavorite = currentUser.isFavorite(story);
+  //TODO: create new helper function for generating star
+  let starClass = '';
+  if (currentUser) {
+    starClass = currentUser.isFavorite(story) ? "bi-star-fill" : "bi-star";
+  }
 
   return $(`
       <li id="${story.storyId}">
-        <i class="star bi ${isFavorite ? "bi-star-fill" : "bi-star"}"></i>
+        <i class="star bi ${starClass}"></i>
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -60,7 +63,7 @@ function putFavoriteStoriesOnPage() {
   console.debug("putFavoriteStoriesOnPage");
   $allStoriesList.hide();
   $favoriteStoriesList.empty();
-
+  //TODO: Check length and update ui if length is 0
   // loop through all of our favorite stories and generate HTML for them
   for (let story of currentUser.favorites) {
     const $story = generateStoryMarkup(story);
@@ -92,11 +95,14 @@ async function handleSubmitStory(evt) {
 $storySubmitForm.on("submit", handleSubmitStory);
 
 /** Handles Click and Adds or Removes story to favorites based on current state */
-async function handleToggleFavorite(evt) {
+async function handleToggleFavoriteClick(evt) {
   const $clickTarget = $(evt.target);
   const storyId = $clickTarget.closest('li').attr('id');
+  //TODO: update name to getStoryByid
   const story = await Story.getStoryFromId(storyId);
 
+  //TODO: add await to add favorite and unfav
+  //TODO: Update to check class instead of checking isFavorite
   if (!currentUser.isFavorite(story)) {
     currentUser.addFavorite(story);
   } else {
@@ -105,5 +111,5 @@ async function handleToggleFavorite(evt) {
   $clickTarget.toggleClass('bi-star bi-star-fill');
 }
 
-$allStoriesList.on("click", ".star", handleToggleFavorite);
-$favoriteStoriesList.on("click", ".star", handleToggleFavorite);
+$allStoriesList.on("click", ".star", handleToggleFavoriteClick);
+$favoriteStoriesList.on("click", ".star", handleToggleFavoriteClick);
