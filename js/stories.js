@@ -120,21 +120,22 @@ async function handleRemoveStoryClick(evt) {
 
 $storiesContainer.on("click", ".bi-trash", handleRemoveStoryClick);
 
+/** Handle click of Edit Story Icon*/
 async function handleEditStoryButtonClick(evt) {
   const $clickTarget = $(evt.target);
   const storyId = $clickTarget.closest('li').attr('id');
   const story = await Story.getStoryById(storyId);
+
   $storyEditTitle.val(story.title);
   $storyEditUrl.val(story.url);
   $storyEditForm.data("story-id", storyId);
-  $storyEditForm.show();
 
-  /*  await storyList.editStory(currentUser, story);
-   putStoriesOnPage($myStoriesList, currentUser.ownStories); */
+  $storyEditForm.show();
 }
 
 $storiesContainer.on("click", ".bi-pencil-square", handleEditStoryButtonClick);
 
+/** Handles Click of Cancel Edit Button */
 function handleCancelEditStoryButtonClick() {
   $storyEditForm[0].reset();
   $storyEditForm.hide();
@@ -142,22 +143,21 @@ function handleCancelEditStoryButtonClick() {
 
 $storyEditForm.on("click", "#story-edit-exit-button", handleCancelEditStoryButtonClick);
 
+/**  Handles Click of Save Edit Button*/
 async function handleSaveEditStoryButtonClick(evt) {
   evt.preventDefault(); // prevent page refresh
 
-  const $clickTarget = $(evt.target);
   const storyId = $storyEditForm.data("story-id");
   const title = $("#story-edit-title").val();
   const url = $("#story-edit-url").val();
 
   if (!$storyEditForm.get(0).reportValidity()) return;
 
-  const story = await storyList.editStory(currentUser, storyId, { title, url });
-  // const $story = generateStoryMarkup(story);
-  // $allStoriesList.prepend($story);
+  await storyList.editStory(currentUser, storyId, { title, url });
 
-  // $storySubmitForm[0].reset();
-  // $storySubmitForm.hide();
+  putStoriesOnPage($myStoriesList, currentUser.ownStories);
+  $storyEditForm[0].reset();
+  $storyEditForm.hide();
 }
 
 $storyEditForm.on("submit", handleSaveEditStoryButtonClick);

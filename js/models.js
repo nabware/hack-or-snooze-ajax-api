@@ -92,7 +92,7 @@ class StoryList {
     user.ownStories.unshift(story);
     return story;
   }
-
+  /**  Takes user and storyId and makes DELETE request to delete from API and updates local storage  */
   async removeStory(user, storyId) {
     await this._setStory("DELETE", `/stories/${storyId}`, {
       token: user.loginToken
@@ -108,18 +108,20 @@ class StoryList {
     // user.ownStories.unshift(story);
     // return story;
   }
-
+  /**Takes User, storyId, and story and makes fetch call and updates local storage and API */
   async editStory(user, storyId, story) {
     const response = await this._setStory("PATCH", `/stories/${storyId}`, {
       token: user.loginToken,
       story
     });
     const data = await response.json();
-    // const story1 = new Story(data.story);
+    const updatedStory = new Story(data.story);
     // update local lists
-    return story;
+    currentUser.favorites.splice(currentUser.favorites.findIndex(x => x.storyId === storyId), 1, updatedStory);
+    currentUser.ownStories.splice(currentUser.ownStories.findIndex(x => x.storyId === storyId), 1, updatedStory);
+    this.stories.splice(this.stories.findIndex(x => x.storyId === storyId), 1, updatedStory);
   }
-
+  /** takes a method endpoint and body and makes and awaits then ruturns fetch */
   async _setStory(method, endpoint, body) {
     return await fetch(`${BASE_URL}${endpoint}`, {
       method,
