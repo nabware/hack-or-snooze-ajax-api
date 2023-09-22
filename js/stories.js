@@ -22,15 +22,10 @@ async function getAndShowStoriesOnStart() {
 function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
   const hostName = story.getHostName();
-  //TODO: create new helper function for generating star
-  let starClass = '';
-  if (currentUser) {
-    starClass = currentUser.isFavorite(story) ? "bi-star-fill" : "bi-star";
-  }
 
   return $(`
       <li id="${story.storyId}">
-        <i class="star bi ${starClass}"></i>
+        ${generateStarMarkup(story)}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -40,6 +35,13 @@ function generateStoryMarkup(story) {
       </li>
     `);
 }
+
+/** Returns the markup for the star. */
+  function generateStarMarkup(story) {
+    if (!currentUser) return "";
+    let starClass = currentUser.isFavorite(story) ? "bi-star-fill" : "bi-star";
+    return `<i class="star bi ${starClass}"></i>`;
+  }
 
 /** Gets list of stories from server, generates their HTML, and puts on page. */
 
@@ -63,7 +65,11 @@ function putFavoriteStoriesOnPage() {
   console.debug("putFavoriteStoriesOnPage");
   $allStoriesList.hide();
   $favoriteStoriesList.empty();
-  //TODO: Check length and update ui if length is 0
+
+  if (currentUser.favorites.length === 0) {
+    $favoriteStoriesList.append("Sorry, you have no favorites").show();
+    return;
+  }
   // loop through all of our favorite stories and generate HTML for them
   for (let story of currentUser.favorites) {
     const $story = generateStoryMarkup(story);
@@ -98,15 +104,12 @@ $storySubmitForm.on("submit", handleSubmitStory);
 async function handleToggleFavoriteClick(evt) {
   const $clickTarget = $(evt.target);
   const storyId = $clickTarget.closest('li').attr('id');
-  //TODO: update name to getStoryByid
-  const story = await Story.getStoryFromId(storyId);
+  const story = await Story.getStoryById(storyId);
 
-  //TODO: add await to add favorite and unfav
-  //TODO: Update to check class instead of checking isFavorite
-  if (!currentUser.isFavorite(story)) {
-    currentUser.addFavorite(story);
+  if ($clickTarget.hasClass("bi-star")) {
+    await currentUser.addFavorite(story);
   } else {
-    currentUser.unFavorite(story);
+    await currentUser.unFavorite(story);
   }
   $clickTarget.toggleClass('bi-star bi-star-fill');
 }
