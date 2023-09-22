@@ -16,10 +16,14 @@ const $signupForm = $("#signup-form");
 const $navMainLinks = $('.main-nav-links');
 const $navSubmit = $('#nav-submit-story');
 const $storySubmitForm = $('#story-submit-form');
+
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
 
+const $storyEditForm = $('#story-edit-form');
+const $storyEditTitle = $('#story-edit-title');
+const $storyEditUrl = $('#story-edit-url');
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After
  * calling this, individual components can re-show just what they want.

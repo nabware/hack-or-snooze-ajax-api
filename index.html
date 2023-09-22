@@ -68,6 +68,20 @@
       <button id="story-submit-button" type="submit">Submit</button>
     </form>
 
+    <!-- area for submitting a new story -->
+    <form id="story-edit-form" action="#" class="hidden">
+      <div>
+        <label>title</label>
+        <input id="story-edit-title" required type="text" placeholder="story title">
+      </div>
+      <div>
+        <label>url</label>
+        <input id="story-edit-url" required type="url" placeholder="story url">
+      </div>
+      <button id="story-edit-exit-button" type="submit">Cancel Changes</button>
+      <button id="story-edit-submit-button" type="submit">Save Changes</button>
+    </form>
+
     <!-- List of all stories -->
     <ol id="all-stories-list" class="stories-list"></ol>
 
@@ -115,6 +129,8 @@
       <button type="submit">create account</button>
     </form>
   </section>
+
+
 
   <!-- Library JS & our JS -->
   <script src="https://unpkg.com/jquery"></script>

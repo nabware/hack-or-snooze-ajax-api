@@ -119,3 +119,19 @@ async function handleRemoveStoryClick(evt) {
 }
 
 $storiesContainer.on("click", ".bi-trash", handleRemoveStoryClick);
+
+async function handleEditStoryButtonClick(evt) {
+  const $clickTarget = $(evt.target);
+  const storyId = $clickTarget.closest('li').attr('id');
+  const story = await Story.getStoryById(storyId);
+  $storyEditTitle.val(story.title);
+  $storyEditUrl.val(story.url);
+  $storyEditForm.show();
+
+  /*  await storyList.editStory(currentUser, story);
+   putStoriesOnPage($myStoriesList, currentUser.ownStories); */
+}
+
+$storiesContainer.on("click", ".bi-pencil-square", handleEditStoryButtonClick);
+
+
