@@ -164,6 +164,11 @@ class User {
         "content-type": "application/json",
       }
     });
+
+    if (response.status === 409) {
+      throw new Error("Username is taken");
+    }
+
     const userData = await response.json();
     const { user } = userData;
 
@@ -194,7 +199,7 @@ class User {
       }
     });
 
-    if (!response.ok) {
+    if (response.status === 401 || response.status === 404) {
       throw new Error("Invalid username or password");
     }
 

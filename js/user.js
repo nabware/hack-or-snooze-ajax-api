@@ -19,9 +19,9 @@ async function login(evt) {
 
   // User.login retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
-  try{
+  try {
     currentUser = await User.login(username, password);
-  } catch(e){
+  } catch (e) {
     alert(e);
     return;
   }
@@ -47,7 +47,12 @@ async function signup(evt) {
 
   // User.signup retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
-  currentUser = await User.signup(username, password, name);
+  try {
+    currentUser = await User.signup(username, password, name);
+  } catch (e) {
+      alert(e);
+      return;
+  }
 
   saveUserCredentialsInLocalStorage();
   updateUIOnUserLogin();
