@@ -93,6 +93,7 @@ class StoryList {
     const data = await response.json();
     const story = new Story(data.story);
     this.stories.unshift(story);
+    user.ownStories.unshift(story);
     return story;
   }
 }
