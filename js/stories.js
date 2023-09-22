@@ -134,4 +134,11 @@ async function handleEditStoryButtonClick(evt) {
 
 $storiesContainer.on("click", ".bi-pencil-square", handleEditStoryButtonClick);
 
+async function handleCancelEditStoryButtonClick() {
+  $storyEditForm[0].reset();
+  $storyEditForm.hide();
+}
+
+$storyEditForm.on("click", "#story-edit-exit-button", handleCancelEditStoryButtonClick);
+
 
