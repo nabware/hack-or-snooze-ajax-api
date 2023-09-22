@@ -109,6 +109,17 @@ class StoryList {
     // return story;
   }
 
+  async editStory(user, storyId, story) {
+    const response = await this._setStory("PATCH", `/stories/${storyId}`, {
+      token: user.loginToken,
+      story
+    });
+    const data = await response.json();
+    // const story1 = new Story(data.story);
+    // update local lists
+    return story;
+  }
+
   async _setStory(method, endpoint, body) {
     return await fetch(`${BASE_URL}${endpoint}`, {
       method,

@@ -126,6 +126,7 @@ async function handleEditStoryButtonClick(evt) {
   const story = await Story.getStoryById(storyId);
   $storyEditTitle.val(story.title);
   $storyEditUrl.val(story.url);
+  $storyEditForm.data("story-id", storyId);
   $storyEditForm.show();
 
   /*  await storyList.editStory(currentUser, story);
@@ -134,11 +135,31 @@ async function handleEditStoryButtonClick(evt) {
 
 $storiesContainer.on("click", ".bi-pencil-square", handleEditStoryButtonClick);
 
-async function handleCancelEditStoryButtonClick() {
+function handleCancelEditStoryButtonClick() {
   $storyEditForm[0].reset();
   $storyEditForm.hide();
 }
 
 $storyEditForm.on("click", "#story-edit-exit-button", handleCancelEditStoryButtonClick);
+
+async function handleSaveEditStoryButtonClick(evt) {
+  evt.preventDefault(); // prevent page refresh
+
+  const $clickTarget = $(evt.target);
+  const storyId = $storyEditForm.data("story-id");
+  const title = $("#story-edit-title").val();
+  const url = $("#story-edit-url").val();
+
+  if (!$storyEditForm.get(0).reportValidity()) return;
+
+  const story = await storyList.editStory(currentUser, storyId, { title, url });
+  // const $story = generateStoryMarkup(story);
+  // $allStoriesList.prepend($story);
+
+  // $storySubmitForm[0].reset();
+  // $storySubmitForm.hide();
+}
+
+$storyEditForm.on("submit", handleSaveEditStoryButtonClick);
 
 
