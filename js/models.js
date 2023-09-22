@@ -193,6 +193,11 @@ class User {
         "content-type": "application/json",
       }
     });
+    console.log("this is response", response);
+    if (!response.ok) {
+      alert("wrong login");
+      return;
+    }
     const userData = await response.json();
     const { user } = userData;
 
