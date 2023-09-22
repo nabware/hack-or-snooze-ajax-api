@@ -27,6 +27,14 @@ class Story {
     // const url = new URL(this.url);
     return new URL(this.url).hostname;
   }
+
+  /** takes a story Id and Calls the API returns story Instance */
+  static async getStoryFromId(storyId) {
+    const response = await fetch(`${BASE_URL}/stories/${storyId}`);
+    const data = await response.json();
+
+    return new Story(data.story);
+  }
 }
 
 
@@ -64,15 +72,6 @@ class StoryList {
 
     // build an instance of our own class using the new array of stories
     return new StoryList(stories);
-  }
-
-  /** takes a story Id and Calls the API returns story Instance */
-  static async getStoryFromId(storyId) {
-    const response = await fetch(`${BASE_URL}/stories/${storyId}`);
-    const data = await response.json();
-    const { title, author, url, username, createdAt } = data.story;
-
-    return new Story({ storyId, title, author, url, username, createdAt });
   }
 
   /** Adds story data to API, makes a Story instance, adds it to story list.
@@ -250,5 +249,9 @@ class User {
 
     const storyIdx = currentUser.favorites.findIndex(x => x.storyId === story.storyId);
     currentUser.favorites.splice(storyIdx, 1);
+  }
+
+  isFavorite(story) {
+    return this.favorites.find(s => s.storyId === story.storyId);
   }
 }

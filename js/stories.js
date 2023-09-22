@@ -23,7 +23,8 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
-  const isFavorite = currentUser.favorites.find(s => s.storyId === story.storyId);
+  const isFavorite = currentUser.isFavorite(story);
+
   return $(`
       <li id="${story.storyId}">
         <i class="star bi ${isFavorite ? "bi-star-fill" : "bi-star"}"></i>
@@ -41,7 +42,7 @@ function generateStoryMarkup(story) {
 
 function putStoriesOnPage() {
   console.debug("putStoriesOnPage");
-
+  $favoriteStoriesList.hide();
   $allStoriesList.empty();
 
   // loop through all of our stories and generate HTML for them
@@ -57,16 +58,16 @@ function putStoriesOnPage() {
 
 function putFavoriteStoriesOnPage() {
   console.debug("putFavoriteStoriesOnPage");
-
-  $allStoriesList.empty();
+  $allStoriesList.hide();
+  $favoriteStoriesList.empty();
 
   // loop through all of our favorite stories and generate HTML for them
   for (let story of currentUser.favorites) {
     const $story = generateStoryMarkup(story);
-    $allStoriesList.append($story);
+    $favoriteStoriesList.append($story);
   }
 
-  $allStoriesList.show();
+  $favoriteStoriesList.show();
 }
 
 /** Retrieves data from '#story-submit-form and displays new story on page*/
@@ -94,9 +95,9 @@ $storySubmitForm.on("submit", handleSubmitStory);
 async function handleToggleFavorite(evt) {
   const $clickTarget = $(evt.target);
   const storyId = $clickTarget.closest('li').attr('id');
-  const story = await StoryList.getStoryFromId(storyId);
+  const story = await Story.getStoryFromId(storyId);
 
-  if ($clickTarget.hasClass('bi-star')) {
+  if (!currentUser.isFavorite(story)) {
     currentUser.addFavorite(story);
   } else {
     currentUser.unFavorite(story);
@@ -105,3 +106,4 @@ async function handleToggleFavorite(evt) {
 }
 
 $allStoriesList.on("click", ".star", handleToggleFavorite);
+$favoriteStoriesList.on("click", ".star", handleToggleFavorite);
