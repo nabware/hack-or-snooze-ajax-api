@@ -25,7 +25,7 @@ function generateStoryMarkup(story) {
 
   return $(`
       <li id="${story.storyId}">
-        ${generateTrashMarkup()}
+        ${generateMyStoryMarkup()}
         ${generateStarMarkup(story)}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -44,10 +44,11 @@ function generateStarMarkup(story) {
   return `<i class="star bi ${starClass}"></i>`;
 }
 
-/** Returns the markup for the trash. */
-function generateTrashMarkup() {
+/** Returns the markup for the trash and edit. */
+function generateMyStoryMarkup() {
   if (!$myStoriesList.hasClass("active")) return "";
-  return "<i class='bi bi-trash'></i>";
+  return `<i class='bi bi-pencil-square'></i>
+  <i class='bi bi-trash'></i>`;
 }
 
 
