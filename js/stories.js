@@ -25,6 +25,7 @@ function generateStoryMarkup(story) {
 
   return $(`
       <li id="${story.storyId}">
+        ${generateTrashMarkup()}
         ${generateStarMarkup(story)}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
@@ -43,8 +44,9 @@ function generateStarMarkup(story) {
   return `<i class="star bi ${starClass}"></i>`;
 }
 
-function generateTrashMarkup(story) {
-
+/** Returns the markup for the trash. */
+function generateTrashMarkup() {
+  if(!$myStoriesList.hasClass("active")) return "";
   return "<i class='bi bi-trash'></i>";
 }
 
@@ -105,5 +107,13 @@ async function handleToggleFavoriteClick(evt) {
 }
 
 $storiesContainer.on("click", ".star", handleToggleFavoriteClick);
-/* $favoriteStoriesList.on("click", ".star", handleToggleFavoriteClick);
- *//* $myStoriesList.on("click", ".star", handleToggleFavoriteClick); */
+
+/** Handles Click and Removes story */
+async function handleRemoveStoryClick(evt) {
+  const $clickTarget = $(evt.target);
+  const storyId = $clickTarget.closest('li').attr('id');
+
+  await currentUser.removeStory(storyId);
+}
+
+$storiesContainer.on("click", ".star", handleToggleFavoriteClick);

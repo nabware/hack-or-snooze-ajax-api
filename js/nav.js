@@ -10,6 +10,7 @@ function navAllStories(evt) {
   console.debug("navAllStories", evt);
   evt.preventDefault();
   hidePageComponents();
+  $myStoriesList.removeClass("active");
   putStoriesOnPage();
 }
 
@@ -52,6 +53,7 @@ function navFavoriteStories(evt) {
   console.debug("navFavoriteStories", evt);
   evt.preventDefault();
   hidePageComponents();
+  $myStoriesList.removeClass("active");
   putStoriesOnPage($favoriteStoriesList, currentUser.favorites);
 }
 
@@ -62,6 +64,7 @@ function navMyStories(evt) {
   console.debug("navMyStories", evt);
   evt.preventDefault();
   hidePageComponents();
+  $myStoriesList.addClass("active");
   putStoriesOnPage($myStoriesList, currentUser.ownStories);
 }
 

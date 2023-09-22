@@ -82,19 +82,36 @@ class StoryList {
    */
 
   async addStory(user, newStory) {
-    const response = await fetch(`${BASE_URL}/stories`, {
-      method: "POST",
-      body: JSON.stringify({
-        token: user.loginToken,
-        story: newStory
-      }),
-      headers: { "Content-Type": "application/json" },
+    const response = await this._setStory("POST", "/stories", {
+      token: user.loginToken,
+      story: newStory
     });
     const data = await response.json();
     const story = new Story(data.story);
     this.stories.unshift(story);
     user.ownStories.unshift(story);
     return story;
+  }
+
+  async removeStory(user, storyId) {
+    await this._setStory("DELETE", `/stories/${storyId}`, {
+      token: user.loginToken
+    });
+    // remove story from story list if it exists
+    // remove currentUser.ownStories
+    // remove currentUser.favorites
+
+    // this.stories.unshift(story);
+    // user.ownStories.unshift(story);
+    // return story;
+  }
+
+  async _setStory(method, endpoint, body) {
+    return await fetch(`${BASE_URL}${endpoint}`, {
+      method,
+      body: JSON.stringify(body),
+      headers: { "Content-Type": "application/json" },
+    });
   }
 }
 
