@@ -100,6 +100,9 @@ class StoryList {
     // remove story from story list if it exists
     // remove currentUser.ownStories
     // remove currentUser.favorites
+    currentUser.favorites = currentUser.favorites.filter(x => x.storyId !== storyId);
+    currentUser.ownStories = currentUser.ownStories.filter(x => x.storyId !== storyId);
+    this.stories = this.stories.filter(x => x.storyId !== storyId);
 
     // this.stories.unshift(story);
     // user.ownStories.unshift(story);

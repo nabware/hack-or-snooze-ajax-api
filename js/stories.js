@@ -46,7 +46,7 @@ function generateStarMarkup(story) {
 
 /** Returns the markup for the trash. */
 function generateTrashMarkup() {
-  if(!$myStoriesList.hasClass("active")) return "";
+  if (!$myStoriesList.hasClass("active")) return "";
   return "<i class='bi bi-trash'></i>";
 }
 
@@ -113,7 +113,8 @@ async function handleRemoveStoryClick(evt) {
   const $clickTarget = $(evt.target);
   const storyId = $clickTarget.closest('li').attr('id');
 
-  await currentUser.removeStory(storyId);
+  await storyList.removeStory(currentUser, storyId);
+  putStoriesOnPage($myStoriesList, currentUser.ownStories);
 }
 
-$storiesContainer.on("click", ".star", handleToggleFavoriteClick);
+$storiesContainer.on("click", ".bi-trash", handleRemoveStoryClick);
