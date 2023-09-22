@@ -112,4 +112,5 @@ function updateUIOnUserLogin() {
   hidePageComponents();
   putStoriesOnPage();
   updateNavOnLogin();
+  $navMainLinks.show();
 }

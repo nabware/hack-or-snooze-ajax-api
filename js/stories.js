@@ -37,19 +37,29 @@ function generateStoryMarkup(story) {
 }
 
 /** Returns the markup for the star. */
-  function generateStarMarkup(story) {
-    if (!currentUser) return "";
-    let starClass = currentUser.isFavorite(story) ? "bi-star-fill" : "bi-star";
-    return `<i class="star bi ${starClass}"></i>`;
-  }
+function generateStarMarkup(story) {
+  if (!currentUser) return "";
+  let starClass = currentUser.isFavorite(story) ? "bi-star-fill" : "bi-star";
+  return `<i class="star bi ${starClass}"></i>`;
+}
 
-  /** Gets list of stories from server, generates their HTML, and puts on page. */
+function generateTrashMarkup(story) {
+
+  return "<i class='bi bi-trash'></i>";
+}
+
+
+/** Gets list of stories from server, generates their HTML, and puts on page. */
 
 function putStoriesOnPage($list = $allStoriesList, targetStories = storyList.stories) {
   console.debug("putStoriesOnPage");
   hidePageComponents();
   $list.empty();
 
+  if (targetStories.length === 0) {
+    $list.append("Sorry, no Stories here!").show();
+    return;
+  }
   // loop through all of our stories and generate HTML for them
   for (let story of targetStories) {
     const $story = generateStoryMarkup(story);
@@ -57,62 +67,6 @@ function putStoriesOnPage($list = $allStoriesList, targetStories = storyList.sto
   }
 
   $list.show();
-}
-
-// /** Gets list of stories from server, generates their HTML, and puts on page. */
-
-// function putStoriesOnPage() {
-//   console.debug("putStoriesOnPage");
-//   $favoriteStoriesList.hide();
-//   $allStoriesList.empty();
-
-//   // loop through all of our stories and generate HTML for them
-//   for (let story of storyList.stories) {
-//     const $story = generateStoryMarkup(story);
-//     $allStoriesList.append($story);
-//   }
-
-//   $allStoriesList.show();
-// }
-
-/** Get favorite stories from current user, generates their HTML, and puts on page. */
-
-function putFavoriteStoriesOnPage() {
-  console.debug("putFavoriteStoriesOnPage");
-  $allStoriesList.hide();
-  $favoriteStoriesList.empty();
-
-  if (currentUser.favorites.length === 0) {
-    $favoriteStoriesList.append("Sorry, you have no favorites").show();
-    return;
-  }
-  // loop through all of our favorite stories and generate HTML for them
-  for (let story of currentUser.favorites) {
-    const $story = generateStoryMarkup(story);
-    $favoriteStoriesList.append($story);
-  }
-
-  $favoriteStoriesList.show();
-}
-
-/** Get favorite stories from current user, generates their HTML, and puts on page. */
-
-function putMyStoriesOnPage() {
-  console.debug("putMyStoriesOnPage");
-  $allStoriesList.hide();
-  $favoriteStoriesList.empty();
-
-  if (currentUser.favorites.length === 0) {
-    $favoriteStoriesList.append("Sorry, you have no favorites").show();
-    return;
-  }
-  // loop through all of our favorite stories and generate HTML for them
-  for (let story of currentUser.favorites) {
-    const $story = generateStoryMarkup(story);
-    $favoriteStoriesList.append($story);
-  }
-
-  $favoriteStoriesList.show();
 }
 
 /** Retrieves data from '#story-submit-form and displays new story on page*/
@@ -150,5 +104,6 @@ async function handleToggleFavoriteClick(evt) {
   $clickTarget.toggleClass('bi-star bi-star-fill');
 }
 
-$allStoriesList.on("click", ".star", handleToggleFavoriteClick);
-$favoriteStoriesList.on("click", ".star", handleToggleFavoriteClick);
+$storiesContainer.on("click", ".star", handleToggleFavoriteClick);
+/* $favoriteStoriesList.on("click", ".star", handleToggleFavoriteClick);
+ *//* $myStoriesList.on("click", ".star", handleToggleFavoriteClick); */

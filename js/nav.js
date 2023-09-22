@@ -55,14 +55,14 @@ function navFavoriteStories(evt) {
   putStoriesOnPage($favoriteStoriesList, currentUser.favorites);
 }
 
-$body.on("click", "#nav-favorites", navFavoriteStories);
+$navMainLinks.on("click", "#nav-favorites", navFavoriteStories);
 
 /** Show list of my stories on click 'my stories' in nav */
 function navMyStories(evt) {
   console.debug("navMyStories", evt);
   evt.preventDefault();
   hidePageComponents();
-  // putFavoriteStoriesOnPage();
+  putStoriesOnPage($myStoriesList, currentUser.ownStories);
 }
 
-$body.on("click", "#nav-my-stories", navMyStories);
+$navMainLinks.on("click", "#nav-my-stories", navMyStories);

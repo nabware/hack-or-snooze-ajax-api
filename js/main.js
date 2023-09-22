@@ -5,6 +5,7 @@
 const $body = $("body");
 
 const $storiesLoadingMsg = $("#stories-loading-msg");
+const $storiesContainer = $('.stories-container');
 const $allStoriesList = $("#all-stories-list");
 const $favoriteStoriesList = $("#favorite-stories-list");
 const $myStoriesList = $("#my-stories-list");
@@ -12,6 +13,7 @@ const $myStoriesList = $("#my-stories-list");
 const $loginForm = $("#login-form");
 const $signupForm = $("#signup-form");
 
+const $navMainLinks = $('.main-nav-links');
 const $navSubmit = $('#nav-submit-story');
 const $storySubmitForm = $('#story-submit-form');
 const $navLogin = $("#nav-login");
