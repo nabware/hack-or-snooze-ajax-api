@@ -43,26 +43,62 @@ function generateStoryMarkup(story) {
     return `<i class="star bi ${starClass}"></i>`;
   }
 
-/** Gets list of stories from server, generates their HTML, and puts on page. */
+  /** Gets list of stories from server, generates their HTML, and puts on page. */
 
-function putStoriesOnPage() {
+function putStoriesOnPage($list = $allStoriesList, targetStories = storyList.stories) {
   console.debug("putStoriesOnPage");
-  $favoriteStoriesList.hide();
-  $allStoriesList.empty();
+  hidePageComponents();
+  $list.empty();
 
   // loop through all of our stories and generate HTML for them
-  for (let story of storyList.stories) {
+  for (let story of targetStories) {
     const $story = generateStoryMarkup(story);
-    $allStoriesList.append($story);
+    $list.append($story);
   }
 
-  $allStoriesList.show();
+  $list.show();
 }
+
+// /** Gets list of stories from server, generates their HTML, and puts on page. */
+
+// function putStoriesOnPage() {
+//   console.debug("putStoriesOnPage");
+//   $favoriteStoriesList.hide();
+//   $allStoriesList.empty();
+
+//   // loop through all of our stories and generate HTML for them
+//   for (let story of storyList.stories) {
+//     const $story = generateStoryMarkup(story);
+//     $allStoriesList.append($story);
+//   }
+
+//   $allStoriesList.show();
+// }
 
 /** Get favorite stories from current user, generates their HTML, and puts on page. */
 
 function putFavoriteStoriesOnPage() {
   console.debug("putFavoriteStoriesOnPage");
+  $allStoriesList.hide();
+  $favoriteStoriesList.empty();
+
+  if (currentUser.favorites.length === 0) {
+    $favoriteStoriesList.append("Sorry, you have no favorites").show();
+    return;
+  }
+  // loop through all of our favorite stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $favoriteStoriesList.append($story);
+  }
+
+  $favoriteStoriesList.show();
+}
+
+/** Get favorite stories from current user, generates their HTML, and puts on page. */
+
+function putMyStoriesOnPage() {
+  console.debug("putMyStoriesOnPage");
   $allStoriesList.hide();
   $favoriteStoriesList.empty();
 

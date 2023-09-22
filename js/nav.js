@@ -52,7 +52,17 @@ function navFavoriteStories(evt) {
   console.debug("navFavoriteStories", evt);
   evt.preventDefault();
   hidePageComponents();
-  putFavoriteStoriesOnPage();
+  putStoriesOnPage($favoriteStoriesList, currentUser.favorites);
 }
 
 $body.on("click", "#nav-favorites", navFavoriteStories);
+
+/** Show list of my stories on click 'my stories' in nav */
+function navMyStories(evt) {
+  console.debug("navMyStories", evt);
+  evt.preventDefault();
+  hidePageComponents();
+  // putFavoriteStoriesOnPage();
+}
+
+$body.on("click", "#nav-my-stories", navMyStories);
