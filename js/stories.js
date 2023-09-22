@@ -90,17 +90,18 @@ async function handleSubmitStory(evt) {
 
 $storySubmitForm.on("submit", handleSubmitStory);
 
-async function addOrRemoveFavorite(evt) {
+/** Handles Click and Adds or Removes story to favorites based on current state */
+async function handleToggleFavorite(evt) {
   const $clickTarget = $(evt.target);
   const storyId = $clickTarget.closest('li').attr('id');
-  // const story = await StoryList.getStoryFromId(storyId);
+  const story = await StoryList.getStoryFromId(storyId);
 
   if ($clickTarget.hasClass('bi-star')) {
-    currentUser.addFavorite({ storyId });
+    currentUser.addFavorite(story);
   } else {
-    currentUser.unFavorite({ storyId });
+    currentUser.unFavorite(story);
   }
   $clickTarget.toggleClass('bi-star bi-star-fill');
 }
 
-$allStoriesList.on("click", ".star", addOrRemoveFavorite);
+$allStoriesList.on("click", ".star", handleToggleFavorite);

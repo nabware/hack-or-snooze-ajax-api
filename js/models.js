@@ -69,10 +69,10 @@ class StoryList {
   /** takes a story Id and Calls the API returns story Instance */
   static async getStoryFromId(storyId) {
     const response = await fetch(`${BASE_URL}/stories/${storyId}`);
-    //const { title, author, url, username, createdAt } = await response.json();
-    //return new Story({ storyId, title, author, url, username, createdAt });
-    return await response.json();
+    const data = await response.json();
+    const { title, author, url, username, createdAt } = data.story;
 
+    return new Story({ storyId, title, author, url, username, createdAt });
   }
 
   /** Adds story data to API, makes a Story instance, adds it to story list.
@@ -222,8 +222,9 @@ class User {
   }
 
   /** takes a Story Instance and adds to users favorite */
-  async addFavorite({ storyId }) {
-    return await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
+  async addFavorite(story) {
+
+    await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
       {
         method: "POST",
         body: JSON.stringify({ token: currentUser.loginToken }),
@@ -231,11 +232,14 @@ class User {
           "content-type": "application/json",
         }
       });
+
+    currentUser.favorites.unshift(story);
   }
 
   /** takes a Story Instance and removes it from users favorites */
-  async unFavorite({ storyId }) {
-    return await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${storyId}`,
+  async unFavorite(story) {
+
+    await fetch(`${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
       {
         method: "DELETE",
         body: JSON.stringify({ token: currentUser.loginToken }),
@@ -243,5 +247,8 @@ class User {
           "content-type": "application/json",
         }
       });
+
+    const storyIdx = currentUser.favorites.findIndex(x => x.storyId === story.storyId);
+    currentUser.favorites.splice(storyIdx, 1);
   }
 }
